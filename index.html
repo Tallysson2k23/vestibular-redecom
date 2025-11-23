@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Questionário Técnico - Tema Escuro Premium</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #0d0f14;
+    font-family: 'Segoe UI', sans-serif;
+    color: #e6e6e6;
+  }
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #161920;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.45);
+  }
+  h1, h2 {
+    text-align: center;
+    margin: 10px 0;
+  }
+  h1 { color: #4f8cff; }
+  h2 { color: #9ab6ff; }
+
+  label.title {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 6px;
+    background: #222631;
+    color: #fff;
+  }
+
+  .question {
+    background: #1d212c;
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border-left: 4px solid #4f8cff;
+  }
+  .question p {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  label.option {
+    display: block;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  label.option:hover {
+    background: rgba(79,140,255,0.15);
+  }
+
+  input[type="radio"] {
+    accent-color: #4f8cff;
+  }
+
+  button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 30px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg,#4f8cff,#6ea1ff);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+  }
+  button:hover {
+    background: linear-gradient(90deg,#6ea1ff,#8eb6ff);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Questionário Técnico</h1>
+  <h2>Fibra Óptica e Redes • Tema Escuro Premium</h2>
+
+  <!-- ENVIA para /submit_result (CORRETO) -->
+  <form id="quizForm">
+
+    <label class="title">Nome:</label>
+    <input type="text" name="nome" required>
+
+    <label class="title">Idade:</label>
+    <input type="number" name="idade" required>
+
+    <!-- Gera automaticamente as 20 perguntas -->
+    <script>
+      const perguntas = [
+        ["Qual é a função principal da máquina de fusão?",
+          ["Medir perda óptica","Limpar conectores","Unir duas fibras de forma precisa","Identificar tipo de cabo","Testar velocidade de navegação"]],
+        ["Em um cabo UTP, quais padrões de cores são utilizados?",
+          ["CAT7 e CAT8","FTTH e FTTB","SC/APC e LC/UPC","T568A e T568B","FDX e HDX"]],
+        ["Qual instrumento mede a potência óptica em dBm?",
+          ["OTDR","Laser Source","Power Meter","Decapador","Clivador"]],
+        ["O que o OTDR permite identificar?",
+          ["Tipo de conector","Eventos ao longo da fibra","Roteamento da internet","Endereços MAC","Frequência do Wi-Fi"]],
+        ["Qual é o tipo de conector mais comum em redes FTTH?",
+          ["HDMI","RJ11","SC/APC","VGA","USB-C"]],
+        ["Qual dispositivo distribui portas ópticas?",
+          ["ONU","Switch L3","CTO","Roteador","OLT"]],
+        ["Comando que testa conectividade:",
+          ["mkdir","reboot","ping","nano","sudo"]],
+        ["Sinal óptico → elétrico na casa:",
+          ["Repetidor","ONU/ONT","Switch PoE","Conversor VGA","Modem coaxial"]],
+        ["Risco ao manusear fibra:",
+          ["Choque","Envenenamento","Ferimentos","Explosão","Queima da OLT"]],
+        ["Item proibido no lixo comum:",
+          ["Papel","Caixa","Resíduos de fibra","Fita adesiva","Plástico"]],
+        ["Função do switch:",
+          ["Converter fibra","Atribuir IP público","Interconectar LAN","Criar GPON","Internet satélite"]],
+        ["Camada do IP no OSI:",
+          ["Física","Enlace","Rede","Sessão","Aplicação"]],
+        ["DHCP significa:",
+          ["Digital Host","Domain Host","Dynamic Host Configuration Protocol","Data Hyper","Dynamic Hardware"]],
+        ["Quem distribui IP automaticamente?",
+          ["Patch panel","ONU","Roteador","Clivador","Coaxial modem"]],
+        ["Função do traceroute:",
+          ["Medir velocidade","Listar Wi-Fi","Exibir caminho dos pacotes","Resetar interface","Criar VLAN"]],
+        ["Cabo Ethernet até 100m:",
+          ["Coaxial","UTP","Multimodo 62.5","HDMI","USB-A"]],
+        ["Função do firewall:",
+          ["Converter sinal","Filtrar tráfego","Aumentar Wi-Fi","Medir latência","Criar splitters"]],
+        ["Classe C:",
+          ["10.0.0.5","172.16.0.1","192.168.10.20","224.0.0.1","255.255.255.255"]],
+        ["Gateway padrão:",
+          ["Servidor","ONU principal","Endereço de saída da LAN","IP VLAN","MAC do roteador"]],
+        ["Protocolo que traduz nomes em IP:",
+          ["FTP","DNS","SNMP","MQTT","POP3"]]
+      ];
+
+      for(let i=0;i<20;i++){
+        document.write(`<div class='question'><p>${i+1}. ${perguntas[i][0]}</p>`);
+        for(let j=0;j<5;j++){
+          const letra = String.fromCharCode(65+j);
+          document.write(`
+            <label class='option'>
+              <input type='radio' name='q${i+1}' value='${letra}' required>
+              ${perguntas[i][1][j]}
+            </label>
+          `);
+        }
+        document.write(`</div>`);
+      }
+    </script>
+
+    <button type="submit">Enviar Respostas</button>
+  </form>
+<script>
+const gabarito = [
+  "C","D","C","B","C","C","C","B","C","C",
+  "C","C","C","C","C","B","B","C","C","B"
+];
+
+document.getElementById("quizForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const form = new FormData(document.getElementById("quizForm"));
+    const nome = form.get("nome");
+    const idade = parseInt(form.get("idade"));
+
+    // CALCULA ACERTOS
+    let acertos = 0;
+    let respostas = {};
+
+    for (let i = 1; i <= 20; i++) {
+        const r = form.get("q" + i);
+        respostas["q" + i] = r;
+        if (r === gabarito[i - 1]) acertos++;
+    }
+
+    // DEFINE SET
+    const set_tipo = acertos >= 14 ? "A" : "B";
+
+    // ENVIA PARA O SERVIDOR
+    fetch("/submit_result", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nome,
+            idade,
+            acertos,
+            set_tipo
+        })
+    })
+    .then(r => r.json())
+    .then(() => {
+        window.location.href = "thanks.html";
+    })
+    .catch(err => {
+        alert("Erro ao enviar dados.");
+        console.error(err);
+    });
+});
+</script>
+
+  <!-- Redirecionar para THANKS sem interferir no envio -->
+  <script>
+    document.getElementById("quizForm").addEventListener("submit", function(){
+      setTimeout(()=>{ window.location.href="thanks.html"; }, 300);
+    });
+  </script>
+
+</div>
+</body>
+</html>

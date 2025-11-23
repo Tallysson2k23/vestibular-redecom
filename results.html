@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Resultados Recebidos</title>
+<style>
+    body {
+        background: #0d0f14;
+        color: #e6e6e6;
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
+    }
+    .box {
+        max-width: 600px;
+        margin: auto;
+        background: #161920;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h1 {
+        text-align: center;
+        color: #4f8cff;
+    }
+    p {
+        font-size: 18px;
+        line-height: 26px;
+    }
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Resultados Recebidos</h1>
+    <p><b>Atenção:</b> Esta página deve ser acessada somente por ADMIN.</p>
+    <hr><br>
+
+    <div id="dados">Carregando...</div>
+</div>
+<script>
+fetch("/get_results")
+  .then(r => r.json())
+  .then(d => {
+      if (d.error) {
+          document.getElementById("dados").innerHTML = d.error;
+          return;
+      }
+
+      document.getElementById("dados").innerHTML = `
+        <p><b>Nome:</b> ${d.nome}</p>
+        <p><b>Idade:</b> ${d.idade}</p>
+        <p><b>Acertos:</b> ${d.acertos} de 20</p>
+        <p><b>SET:</b> ${d.set_tipo}</p>
+        <p><b>Data:</b> ${new Date(d.criado_em).toLocaleString()}</p>
+      `;
+  })
+  .catch(() => {
+      document.getElementById("dados").innerHTML = "Erro ao carregar dados.";
+  });
+</script>
+
+
+</body>
+</html>
