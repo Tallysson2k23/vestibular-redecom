@@ -1,25 +1,22 @@
 {
   "name": "vestibular-redecom",
   "version": "1.0.0",
-  "description": "",
+  "description": "Base de Treinamento Técnico Redecom",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tallysson2k23/vestibular-redecom.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Redecom",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Tallysson2k23/vestibular-redecom/issues"
-  },
-  "homepage": "https://github.com/Tallysson2k23/vestibular-redecom#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.22.1",
+    "pg": "^8.16.3"
   }
 }

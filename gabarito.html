@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Revisão Completa do Teste</title>
+    <style>
+        body { background: #0d0f14; color: #e6e6e6; font-family: "Segoe UI", sans-serif; padding: 20px; line-height: 1.6; }
+        .container { max-width: 850px; margin: auto; }
+        h1 { color: #4f8cff; text-align: center; }
+        .pergunta-box { background: #161920; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 6px solid #2d333f; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        
+        /* Cores de feedback */
+        .correta { border-left-color: #4fff90; }
+        .errada { border-left-color: #ff4f4f; }
+        
+        .opcoes-lista { list-style: none; padding: 0; margin-top: 10px; }
+        .opcao { padding: 8px 12px; margin: 4px 0; border-radius: 6px; background: #1d212c; font-size: 15px; border: 1px solid transparent; }
+        
+        /* Destaques das opções */
+        .marcada-correta { background: rgba(79, 255, 144, 0.2); border: 1px solid #4fff90; color: #4fff90; }
+        .marcada-errada { background: rgba(255, 79, 79, 0.2); border: 1px solid #ff4f4f; color: #ff4f4f; }
+        .deveria-ser { border: 1px dashed #4fff90; color: #4fff90; }
+
+        .header-info { background: #1d212c; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 30px; border: 1px solid #4f8cff; }
+        .btn-voltar { display: block; width: 220px; margin: 30px auto; padding: 15px; text-align: center; background: #4f8cff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Revisão Detalhada</h1>
+        <div id="resultado-info" class="header-info">Carregando sua revisão...</div>
+        <div id="gabarito-lista"></div>
+        <a href="thanks.html" class="btn-voltar">Finalizar Revisão</a>
+    </div>
+
+<script>
+  const perguntas = [
+    ["Qual é a função principal da máquina de fusão no trabalho com fibra?", 
+      ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
+    
+    ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", 
+      ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
+    
+    ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", 
+      ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
+    
+    ["O que o teste de OTDR permite identificar na fibra?", 
+      ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
+    
+    ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", 
+      ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
+    
+    ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", 
+      ["ONU","Switch","CTO","Roteador wireless","OLT"]],
+    
+    ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", 
+      ["mkdir","reboot","ping","nano","sudo"]],
+    
+    ["Qual equipamento converter o sinal de optico em sinal elétrico?", 
+      ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
+    
+    ["Qual é o maior risco ao manusear e cortar fibras ópticas?", 
+      ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
+    
+["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", 
+  ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
+    
+    ["Qual é a função básica de um Switch em uma rede LAN?", 
+      ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
+    
+["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", 
+  ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
+    
+    ["Para que serve o serviço de DHCP em uma rede?", 
+      ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
+    
+    ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", 
+      ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
+    
+    ["O que o comando 'traceroute' mostra para o técnico?", 
+      ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
+    
+    ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", 
+      ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
+    
+    ["Qual é o papel do Firewall na segurança de uma rede?", 
+      ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
+    
+["Ao configurar um roteador secundário o correto é:", 
+  ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
+    
+    ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", 
+      ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
+    
+    ["Qual protocolo traduz nomes para o endereço IP?", 
+      ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
+  ];
+
+        const gabaritoOficial = ["C","D","C","B","C","C","C","B","C","C","C","C","C","C","C","B","B","C","C","B"];
+
+        fetch(`http://${window.location.hostname}:3000/get_results`)
+            .then(r => r.json())
+            .then(d => {
+                const respostasUsuario = typeof d.respostas === 'string' ? JSON.parse(d.respostas) : d.respostas;
+                document.getElementById('resultado-info').innerHTML = `
+                    <p style="margin:0"><strong>Técnico:</strong> ${d.nome} | <strong>Resultado:</strong> ${d.acertos}/20 acertos</p>
+                `;
+                
+                let html = "";
+                perguntas.forEach((pergunta, i) => {
+                    const letraCorreta = gabaritoOficial[i]; // "C"
+                    const indexCorreto = letraCorreta.charCodeAt(0) - 65; // Transforma "C" em 2
+                    
+                    const respostaDada = respostasUsuario[`q${i+1}`]; // "A", "B", etc
+                    const indexDada = respostaDada ? respostaDada.charCodeAt(0) - 65 : -1;
+                    
+                    const acertou = respostaDada === letraCorreta;
+
+                    html += `
+                        <div class="pergunta-box ${acertou ? 'correta' : 'errada'}">
+                            <p><strong>${i+1}. ${pergunta[0]}</strong></p>
+                            <div class="opcoes-lista">
+                    `;
+
+                    pergunta[1].forEach((opcaoTexto, j) => {
+                        let classeOpcao = "opcao";
+                        let icone = "";
+
+                        if (j === indexCorreto) {
+                            classeOpcao += acertou ? " marcada-correta" : " deveria-ser";
+                            if (acertou) icone = " ✅";
+                        } else if (j === indexDada && !acertou) {
+                            classeOpcao += " marcada-errada";
+                            icone = " ❌ (Sua escolha)";
+                        }
+
+                        html += `<div class="${classeOpcao}">${String.fromCharCode(65+j)}) ${opcaoTexto}${icone}</div>`;
+                    });
+
+                    html += `</div></div>`;
+                });
+                document.getElementById('gabarito-lista').innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('resultado-info').innerText = "Erro ao carregar dados do banco.";
+            });
+    </script>
+</body>
+</html>

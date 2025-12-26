@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Obrigado</title>
-<style>
-  body { 
-    background:#0d0f14; color:#e6e6e6; 
-    display:flex; justify-content:center; align-items:center;
-    height:100vh; font-family:Arial; text-align:center;
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>Teste Finalizado</title>
+    <style>
+        body { background: #0d0f14; color: #e6e6e6; font-family: "Segoe UI", sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { width: 100%; max-width: 450px; background: #161920; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #2d333f; }
+        h1 { color: #4f8cff; }
+        p { font-size: 18px; margin-bottom: 20px; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { background: #4f8cff; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-gabarito { background: #222631; color: #9ab6ff; border: 1px solid #4f8cff; }
+        .admin-link { margin-top: 40px; display: block; color: #2d333f; text-decoration: none; font-size: 11px; }
+    </style>
 </head>
 <body>
-  <div>
-    <h1>Obrigado por responder!</h1>
-    <p>Seu resultado será avaliado pela equipe técnica.</p>
-    <p>Você pode fechar esta página.</p>
-  </div>
+    <div class="box">
+        <h1>Obrigado! respostas enviadas</h1>
+        <p>Solicite o codigo para acessa o gabarito.</p>
+        
+        <div class="btn-group">
+         <!--   <a href="index.html" class="btn">Voltar ao Início</a> -->
+            <button onclick="verGabarito()" class="btn btn-gabarito">Ver meu Gabarito</button>
+        </div>
+        
+        <a href="#" onclick="acessoAdmin()" class="admin-link">Acesso Restrito</a>
+    </div>
+
+    <script>
+        function verGabarito() {
+            const codigo = prompt("Digite o código de acesso ao gabarito:");
+            if (codigo === "2025") { // Altere o código aqui
+                window.location.href = "gabarito.html";
+            } else {
+                alert("Código inválido!");
+            }
+        }
+
+        function acessoAdmin() {
+            const senha = prompt("Digite a senha de administrador:");
+            if (senha === "159357") {
+                window.location.href = "results.html";
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+    </script>
 </body>
 </html>
