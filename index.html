@@ -5,74 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Questionário Técnico</title>
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #0d0f14;
-    font-family: 'Segoe UI', sans-serif;
-    color: #e6e6e6;
-  }
-  #timer-bar {
-    position: sticky;
-    top: 0;
-    background: #1d212c;
-    padding: 15px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom: 3px solid #4f8cff;
-    z-index: 1000;
-    display: none;
-  }
+  body { margin: 0; padding: 0; background: #0d0f14; font-family: 'Segoe UI', sans-serif; color: #e6e6e6; overflow-x: hidden; }
+  #timer-bar { position: sticky; top: 0; background: #1d212c; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; border-bottom: 3px solid #4f8cff; z-index: 1000; display: none; }
   #time-display { color: #ff4f4f; }
-  .container {
-    max-width: 900px;
-    margin: 40px auto;
-    background: #161920;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.45);
-  }
+  .container { max-width: 900px; margin: 40px auto; background: #161920; padding: 30px; border-radius: 14px; box-shadow: 0 0 25px rgba(0,0,0,0.45); }
   h1, h2 { text-align: center; margin: 10px 0; }
   h1 { color: #4f8cff; }
   h2 { color: #9ab6ff; }
   label.title { display: block; margin-top: 20px; font-size: 18px; font-weight: 600; }
-  input[type="text"], input[type="number"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 6px;
-    background: #222631;
-    color: #fff;
-    box-sizing: border-box;
-  }
-  .question {
-    background: #1d212c;
-    padding: 18px;
-    border-radius: 10px;
-    margin-top: 20px;
-    border-left: 4px solid #4f8cff;
-  }
+  input[type="text"], input[type="number"], input[type="password"] { width: 100%; padding: 12px; border: none; border-radius: 8px; margin-top: 6px; background: #222631; color: #fff; box-sizing: border-box; }
+  .question { background: #1d212c; padding: 18px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #4f8cff; }
   .question p { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
   label.option { display: block; padding: 6px; cursor: pointer; border-radius: 6px; }
   label.option:hover { background: rgba(79,140,255,0.15); }
   input[type="radio"] { accent-color: #4f8cff; }
-  button {
-    width: 100%;
-    padding: 16px;
-    margin-top: 30px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(90deg,#4f8cff,#6ea1ff);
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-  }
+  button { width: 100%; padding: 16px; margin-top: 30px; border: none; border-radius: 10px; background: linear-gradient(90deg,#4f8cff,#6ea1ff); font-size: 18px; font-weight: bold; cursor: pointer; color: #fff; }
   button:hover { background: linear-gradient(90deg,#6ea1ff,#8eb6ff); }
   #quiz-content { display: none; }
-  #block-message { display: none; text-align: center; padding: 50px; color: #ff4f4f; }
+  
+  /* Tela de Bloqueio Estilizada */
+  #block-message { display: none; text-align: center; padding: 50px; }
+  .error-text { color: #ff4f4f; font-size: 2.5rem; margin-bottom: 10px; }
+  .unlock-area { margin-top: 30px; background: #1d212c; padding: 20px; border-radius: 10px; border: 1px solid #2d333f; }
 </style>
 </head>
 <body>
@@ -83,8 +37,15 @@
 
 <div class="container">
   <div id="block-message">
-    <h1>ACESSO ENCERRADO</h1>
-    <p>Você saiu da página ou tentou pesquisar. Suas respostas foram enviadas e seu acesso bloqueado.</p>
+    <h1 id="status-title" class="error-text">ACESSO BLOQUEADO</h1>
+    <p id="status-desc">Detetamos uma saída da página ou recarregamento não autorizado.</p>
+    
+    <div class="unlock-area" id="unlock-form">
+        <p>Insira o código de liberação para continuar a prova:</p>
+        <input type="password" id="unlock-code" placeholder="Código de 3 dígitos" maxlength="3">
+        <button type="button" onclick="verificarCodigo()">DESBLOQUEAR PROVA</button>
+    </div>
+    <div id="loader" style="display:none; margin-top: 20px;">Redirecionando...</div>
   </div>
 
   <div id="quiz-ui">
@@ -101,45 +62,8 @@
       </div>
 
       <div id="quiz-content">
-          <script>
-            const perguntas = [
-              ["Qual é a função principal da máquina de fusão no trabalho com fibra?", ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
-              ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
-              ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
-              ["O que o teste de OTDR permite identificar na fibra?", ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
-              ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
-              ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", ["ONU","Switch","CTO","Roteador wireless","OLT"]],
-              ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", ["mkdir","reboot","ping","nano","sudo"]],
-              ["Qual equipamento converter o sinal de optico em sinal elétrico?", ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
-              ["Qual é o maior risco ao manusear e cortar fibras ópticas?", ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
-              ["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
-              ["Qual é a função básica de um Switch em uma rede LAN?", ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
-              ["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
-              ["Para que serve o serviço de DHCP em uma rede?", ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
-              ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
-              ["O que o comando 'traceroute' mostra para o técnico?", ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
-              ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
-              ["Qual é o papel do Firewall na segurança de uma rede?", ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
-              ["Ao configurar um roteador secundário o correto é:", ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
-              ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
-              ["Qual protocolo traduz nomes para o endereço IP?", ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
-            ];
-
-            for(let i=0; i<20; i++){
-              document.write(`<div class='question'><p>${i+1}. ${perguntas[i][0]}</p>`);
-              for(let j=0; j<5; j++){
-                const letra = String.fromCharCode(65+j);
-                document.write(`
-                  <label class='option'>
-                    <input type='radio' name='q${i+1}' value='${letra}' required>
-                    ${perguntas[i][1][j]}
-                  </label>
-                `);
-              }
-              document.write(`</div>`);
-            }
-          </script>
-          <button type="submit">Enviar Respostas</button>
+          <div id="perguntas-container"></div>
+          <button type="submit" id="btn-enviar">Enviar Respostas</button>
       </div>
     </form>
   </div>
@@ -147,23 +71,92 @@
 
 <script>
 const gabarito = ["C","D","C","B","C","C","C","B","C","C","C","C","C","C","C","B","B","C","C","B"];
-let tempoRestante = 45 * 60; 
+const perguntas = [
+    ["Qual é a função principal da máquina de fusão no trabalho com fibra?", ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
+    ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
+    ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
+    ["O que o teste de OTDR permite identificar na fibra?", ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
+    ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
+    ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", ["ONU","Switch","CTO","Roteador wireless","OLT"]],
+    ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", ["mkdir","reboot","ping","nano","sudo"]],
+    ["Qual equipamento converter o sinal de optico em sinal elétrico?", ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
+    ["Qual é o maior risco ao manusear e cortar fibras ópticas?", ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
+    ["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
+    ["Qual é a função básica de um Switch em uma rede LAN?", ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
+    ["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
+    ["Para que serve o serviço de DHCP em uma rede?", ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
+    ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
+    ["O que o comando 'traceroute' mostra para o técnico?", ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
+    ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
+    ["Qual é o papel do Firewall na segurança de uma rede?", ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
+    ["Ao configurar um roteador secundário o correto é:", ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
+    ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
+    ["Qual protocolo traduz nomes para o endereço IP?", ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
+];
+
+let tempoRestante = localStorage.getItem('prova_tempo') ? parseInt(localStorage.getItem('prova_tempo')) : 45 * 60;
 let timerAtivo = false;
 let provaEnviada = false;
 
-// Monitor de Visibilidade: Só ativa DEPOIS que a prova começa
+// VERIFICAÇÃO INICIAL DE BLOQUEIO (Anti-Reload)
+window.onload = function() {
+    if (localStorage.getItem('prova_bloqueada') === 'true') {
+        bloquearInterface();
+    }
+};
+
+const containerPerguntas = document.getElementById('perguntas-container');
+perguntas.forEach((p, i) => {
+    let qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.innerHTML = `<p>${i+1}. ${p[0]}</p>`;
+    p[1].forEach((opt, j) => {
+        const letra = String.fromCharCode(65+j);
+        qDiv.innerHTML += `
+            <label class='option'>
+                <input type='radio' name='q${i+1}' value='${letra}' required>
+                ${opt}
+            </label>`;
+    });
+    containerPerguntas.appendChild(qDiv);
+});
+
+function bloquearInterface() {
+    timerAtivo = false;
+    localStorage.setItem('prova_bloqueada', 'true');
+    document.getElementById("quiz-ui").style.display = "none";
+    document.getElementById("timer-bar").style.display = "none";
+    document.getElementById("block-message").style.display = "block";
+    document.getElementById("unlock-form").style.display = "block";
+}
+
 document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === 'hidden' && timerAtivo && !provaEnviada) {
-        timerAtivo = false; // Para o timer imediatamente
-        alert("PROVA ENCERRADA: Você saiu da página e suas respostas foram enviadas.");
-        finalizarImediatamente();
+        bloquearInterface();
+        processarEnvio(false); 
     }
 });
+
+function verificarCodigo() {
+    if (document.getElementById("unlock-code").value === "159") {
+        localStorage.setItem('prova_bloqueada', 'false');
+        document.getElementById("block-message").style.display = "none";
+        document.getElementById("quiz-ui").style.display = "block";
+        document.getElementById("timer-bar").style.display = "block";
+        document.getElementById("unlock-code").value = "";
+        
+        timerAtivo = true;
+        this.enviando = false;
+        atualizarTimer();
+    } else {
+        alert("Código incorreto!");
+    }
+}
 
 function iniciarProva() {
     const n = document.getElementById("input_nome").value;
     const i = document.getElementById("input_idade").value;
-    if(!n || !i) { alert("Preencha nome e idade!"); return; }
+    if(!n || !i) { alert("Preencha os dados!"); return; }
 
     document.getElementById("start-screen").style.display = "none";
     document.getElementById("quiz-content").style.display = "block";
@@ -180,32 +173,32 @@ function atualizarTimer() {
     const seg = tempoRestante % 60;
     document.getElementById("time-display").innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
 
+    // Salva o tempo no navegador a cada segundo para evitar fraude por reload
+    localStorage.setItem('prova_tempo', tempoRestante);
+
     if(tempoRestante <= 0) {
-        alert("Tempo Esgotado!");
-        finalizarImediatamente();
+        timerAtivo = false;
+        localStorage.removeItem('prova_bloqueada');
+        localStorage.removeItem('prova_tempo');
+        processarEnvio(true);
     } else {
         tempoRestante--;
         setTimeout(atualizarTimer, 1000);
     }
 }
 
-function finalizarImediatamente() {
-    // Remove a necessidade de responder tudo antes de enviar por segurança ou tempo
-    const radios = document.querySelectorAll('input[type="radio"]');
-    radios.forEach(r => r.removeAttribute('required'));
-    processarEnvio();
-}
-
 document.getElementById("quizForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    processarEnvio();
+    provaEnviada = true; 
+    timerAtivo = false;
+    localStorage.removeItem('prova_bloqueada');
+    localStorage.removeItem('prova_tempo');
+    processarEnvio(true);
 });
 
-function processarEnvio() {
-    if (provaEnviada) return;
-    provaEnviada = true;
-    timerAtivo = false;
-
+function processarEnvio(deveRedirecionar) {
+    if (this.enviando && deveRedirecionar) return;
+    
     const formElement = document.getElementById("quizForm");
     const form = new FormData(formElement);
     
@@ -219,32 +212,33 @@ function processarEnvio() {
     }
 
     const dados = {
-        nome: form.get("nome"),
-        idade: parseInt(form.get("idade")),
+        nome: document.getElementById("input_nome").value || "Anônimo",
+        idade: parseInt(document.getElementById("input_idade").value) || 0,
         acertos: acertos,
         set_tipo: acertos >= 14 ? "A" : "B",
         respostas: respostasUsuario
     };
 
-    // Mostra a mensagem de bloqueio na tela antes de redirecionar
-    document.getElementById("quiz-ui").style.display = "none";
-    document.getElementById("timer-bar").style.display = "none";
-    document.getElementById("block-message").style.display = "block";
+    if (deveRedirecionar) {
+        document.getElementById("quiz-ui").style.display = "none";
+        document.getElementById("timer-bar").style.display = "none";
+        document.getElementById("block-message").style.display = "block";
+        document.getElementById("unlock-form").style.display = "none";
+        document.getElementById("status-title").innerText = "PROVA FINALIZADA";
+        document.getElementById("status-title").className = "success-text";
+        document.getElementById("loader").style.display = "block";
+    }
 
-    const URL_API = `http://${window.location.hostname}:3000/submit_result`;
-
-    fetch(URL_API, {
+    fetch(`http://${window.location.hostname}:3000/submit_result`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados)
     })
     .then(() => {
-        // Pequeno atraso para o usuário ler a mensagem antes de ir para o thanks
-        setTimeout(() => { window.location.href = "thanks.html"; }, 60000);
+        if(deveRedirecionar) setTimeout(() => { window.location.href = "thanks.html"; }, 3000);
     })
     .catch(err => {
-        console.error(err);
-        window.location.href = "thanks.html"; 
+        if(deveRedirecionar) window.location.href = "thanks.html";
     });
 }
 </script>
