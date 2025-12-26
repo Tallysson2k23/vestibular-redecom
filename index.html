@@ -12,7 +12,6 @@
     font-family: 'Segoe UI', sans-serif;
     color: #e6e6e6;
   }
-  /* Timer fixo no topo */
   #timer-bar {
     position: sticky;
     top: 0;
@@ -23,10 +22,9 @@
     font-weight: bold;
     border-bottom: 3px solid #4f8cff;
     z-index: 1000;
-    display: none; /* Escondido até o início */
+    display: none;
   }
   #time-display { color: #ff4f4f; }
-
   .container {
     max-width: 900px;
     margin: 40px auto;
@@ -38,13 +36,7 @@
   h1, h2 { text-align: center; margin: 10px 0; }
   h1 { color: #4f8cff; }
   h2 { color: #9ab6ff; }
-
-  label.title {
-    display: block;
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: 600;
-  }
+  label.title { display: block; margin-top: 20px; font-size: 18px; font-weight: 600; }
   input[type="text"], input[type="number"] {
     width: 100%;
     padding: 12px;
@@ -55,7 +47,6 @@
     color: #fff;
     box-sizing: border-box;
   }
-
   .question {
     background: #1d212c;
     padding: 18px;
@@ -63,21 +54,10 @@
     margin-top: 20px;
     border-left: 4px solid #4f8cff;
   }
-  .question p {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  label.option {
-    display: block;
-    padding: 6px;
-    cursor: pointer;
-    border-radius: 6px;
-  }
+  .question p { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+  label.option { display: block; padding: 6px; cursor: pointer; border-radius: 6px; }
   label.option:hover { background: rgba(79,140,255,0.15); }
   input[type="radio"] { accent-color: #4f8cff; }
-
   button {
     width: 100%;
     padding: 16px;
@@ -91,8 +71,8 @@
     color: #fff;
   }
   button:hover { background: linear-gradient(90deg,#6ea1ff,#8eb6ff); }
-
-  #quiz-content { display: none; } /* Esconde as perguntas no início */
+  #quiz-content { display: none; }
+  #block-message { display: none; text-align: center; padding: 50px; color: #ff4f4f; }
 </style>
 </head>
 <body>
@@ -102,74 +82,80 @@
 </div>
 
 <div class="container">
-  <h1>Questionário Técnico</h1>
-  <h2>Fibra Óptica e Redes</h2>
+  <div id="block-message">
+    <h1>ACESSO ENCERRADO</h1>
+    <p>Você saiu da página ou tentou pesquisar. Suas respostas foram enviadas e seu acesso bloqueado.</p>
+  </div>
 
-  <form id="quizForm">
-    <div id="start-screen">
-        <label class="title">Nome:</label>
-        <input type="text" name="nome" id="input_nome" required>
+  <div id="quiz-ui">
+    <h1>Questionário Técnico</h1>
+    <h2>Fibra Óptica e Redes</h2>
 
-        <label class="title">Idade:</label>
-        <input type="number" name="idade" id="input_idade" required>
+    <form id="quizForm">
+      <div id="start-screen">
+          <label class="title">Nome:</label>
+          <input type="text" name="nome" id="input_nome" required>
+          <label class="title">Idade:</label>
+          <input type="number" name="idade" id="input_idade" required>
+          <button type="button" onclick="iniciarProva()">INICIAR PROVA</button>
+      </div>
 
-        <button type="button" onclick="iniciarProva()">INICIAR PROVA</button>
-    </div>
+      <div id="quiz-content">
+          <script>
+            const perguntas = [
+              ["Qual é a função principal da máquina de fusão no trabalho com fibra?", ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
+              ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
+              ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
+              ["O que o teste de OTDR permite identificar na fibra?", ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
+              ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
+              ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", ["ONU","Switch","CTO","Roteador wireless","OLT"]],
+              ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", ["mkdir","reboot","ping","nano","sudo"]],
+              ["Qual equipamento converter o sinal de optico em sinal elétrico?", ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
+              ["Qual é o maior risco ao manusear e cortar fibras ópticas?", ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
+              ["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
+              ["Qual é a função básica de um Switch em uma rede LAN?", ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
+              ["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
+              ["Para que serve o serviço de DHCP em uma rede?", ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
+              ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
+              ["O que o comando 'traceroute' mostra para o técnico?", ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
+              ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
+              ["Qual é o papel do Firewall na segurança de uma rede?", ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
+              ["Ao configurar um roteador secundário o correto é:", ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
+              ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
+              ["Qual protocolo traduz nomes para o endereço IP?", ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
+            ];
 
-    <div id="quiz-content">
-        <script>
-          const perguntas = [
-            ["Qual é a função principal da máquina de fusão no trabalho com fibra?", ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
-            ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
-            ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
-            ["O que o teste de OTDR permite identificar na fibra?", ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
-            ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
-            ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", ["ONU","Switch","CTO","Roteador wireless","OLT"]],
-            ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", ["mkdir","reboot","ping","nano","sudo"]],
-            ["Qual equipamento converter o sinal de optico em sinal elétrico?", ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
-            ["Qual é o maior risco ao manusear e cortar fibras ópticas?", ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
-            ["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
-            ["Qual é a função básica de um Switch em uma rede LAN?", ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
-            ["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
-            ["Para que serve o serviço de DHCP em uma rede?", ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
-            ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
-            ["O que o comando 'traceroute' mostra para o técnico?", ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
-            ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
-            ["Qual é o papel do Firewall na segurança de uma rede?", ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
-            ["Ao configurar um roteador secundário o correto é:", ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
-            ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
-            ["Qual protocolo traduz nomes para o endereço IP?", ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
-          ];
-
-          for(let i=0; i<20; i++){
-            document.write(`<div class='question'><p>${i+1}. ${perguntas[i][0]}</p>`);
-            for(let j=0; j<5; j++){
-              const letra = String.fromCharCode(65+j);
-              document.write(`
-                <label class='option'>
-                  <input type='radio' name='q${i+1}' value='${letra}' required>
-                  ${perguntas[i][1][j]}
-                </label>
-              `);
+            for(let i=0; i<20; i++){
+              document.write(`<div class='question'><p>${i+1}. ${perguntas[i][0]}</p>`);
+              for(let j=0; j<5; j++){
+                const letra = String.fromCharCode(65+j);
+                document.write(`
+                  <label class='option'>
+                    <input type='radio' name='q${i+1}' value='${letra}' required>
+                    ${perguntas[i][1][j]}
+                  </label>
+                `);
+              }
+              document.write(`</div>`);
             }
-            document.write(`</div>`);
-          }
-        </script>
-        <button type="submit">Enviar Respostas</button>
-    </div>
-  </form>
+          </script>
+          <button type="submit">Enviar Respostas</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script>
 const gabarito = ["C","D","C","B","C","C","C","B","C","C","C","C","C","C","C","B","B","C","C","B"];
-let tempoRestante = 45 * 60; // 45 minutos
+let tempoRestante = 45 * 60; 
 let timerAtivo = false;
-let provaEnviada = false; // Evita envios duplicados
+let provaEnviada = false;
 
-// Monitor de Visibilidade: Encerra se o usuário sair da página
+// Monitor de Visibilidade: Só ativa DEPOIS que a prova começa
 document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === 'hidden' && timerAtivo && !provaEnviada) {
-        alert("Atenção: Você saiu da página da prova. Suas respostas atuais serão enviadas e a prova encerrada.");
+        timerAtivo = false; // Para o timer imediatamente
+        alert("PROVA ENCERRADA: Você saiu da página e suas respostas foram enviadas.");
         finalizarImediatamente();
     }
 });
@@ -195,7 +181,7 @@ function atualizarTimer() {
     document.getElementById("time-display").innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
 
     if(tempoRestante <= 0) {
-        alert("Tempo Esgotado! Enviando automaticamente...");
+        alert("Tempo Esgotado!");
         finalizarImediatamente();
     } else {
         tempoRestante--;
@@ -204,9 +190,9 @@ function atualizarTimer() {
 }
 
 function finalizarImediatamente() {
-    // Remove o 'required' de todos os campos para permitir o envio incompleto
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => input.removeAttribute('required'));
+    // Remove a necessidade de responder tudo antes de enviar por segurança ou tempo
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(r => r.removeAttribute('required'));
     processarEnvio();
 }
 
@@ -240,6 +226,11 @@ function processarEnvio() {
         respostas: respostasUsuario
     };
 
+    // Mostra a mensagem de bloqueio na tela antes de redirecionar
+    document.getElementById("quiz-ui").style.display = "none";
+    document.getElementById("timer-bar").style.display = "none";
+    document.getElementById("block-message").style.display = "block";
+
     const URL_API = `http://${window.location.hostname}:3000/submit_result`;
 
     fetch(URL_API, {
@@ -247,9 +238,9 @@ function processarEnvio() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados)
     })
-    .then(r => {
-        if (!r.ok) throw new Error("Erro no servidor");
-        window.location.href = "thanks.html";
+    .then(() => {
+        // Pequeno atraso para o usuário ler a mensagem antes de ir para o thanks
+        setTimeout(() => { window.location.href = "thanks.html"; }, 60000);
     })
     .catch(err => {
         console.error(err);
@@ -257,6 +248,5 @@ function processarEnvio() {
     });
 }
 </script>
-
 </body>
 </html>

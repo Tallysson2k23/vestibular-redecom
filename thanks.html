@@ -12,38 +12,101 @@
         .btn { background: #4f8cff; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; }
         .btn-gabarito { background: #222631; color: #9ab6ff; border: 1px solid #4f8cff; }
         .admin-link { margin-top: 40px; display: block; color: #2d333f; text-decoration: none; font-size: 11px; }
+
+        /* Estilos do Modal de Senha */
+        #modal-senha {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center;
+            z-index: 1001;
+        }
+        .modal-content {
+            background: #1d212c;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #4f8cff;
+            text-align: center;
+            width: 300px;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: none;
+            background: #0d0f14;
+            color: white;
+            text-align: center;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
+
     <div class="box">
         <h1>Obrigado! respostas enviadas</h1>
-        <p>Solicite o codigo para acessa o gabarito.</p>
+        <p>Solicite o código para acessar o gabarito.</p>
         
         <div class="btn-group">
-         <!--   <a href="index.html" class="btn">Voltar ao Início</a> -->
-            <button onclick="verGabarito()" class="btn btn-gabarito">Ver meu Gabarito</button>
+            <button onclick="abrirModal('gabarito')" class="btn btn-gabarito">Ver meu Gabarito</button>
         </div>
         
-        <a href="#" onclick="acessoAdmin()" class="admin-link">Acesso Restrito</a>
+        <a href="#" onclick="abrirModal('admin')" class="admin-link">Acesso Restrito</a>
+    </div>
+
+    <div id="modal-senha">
+        <div class="modal-content">
+            <h3 id="modal-titulo" style="color: #4f8cff; margin-top: 0;">Senha de Acesso</h3>
+            <input type="password" id="input-senha" placeholder="Digite aqui..." onkeydown="if(event.key==='Enter') confirmarSenha()">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="fecharModal()" class="btn" style="background: #444; flex: 1; padding: 8px;">Cancelar</button>
+                <button onclick="confirmarSenha()" class="btn" style="flex: 1; padding: 8px;">Entrar</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        function verGabarito() {
-            const codigo = prompt("Digite o código de acesso ao gabarito:");
-            if (codigo === "2025") { // Altere o código aqui
-                window.location.href = "gabarito.html";
-            } else {
-                alert("Código inválido!");
+        let tipoAcesso = ""; // Define se é 'admin' ou 'gabarito'
+
+        function abrirModal(tipo) {
+            tipoAcesso = tipo;
+            const titulo = tipo === 'admin' ? "Acesso Administrador" : "Acesso Gabarito";
+            document.getElementById("modal-titulo").innerText = titulo;
+            document.getElementById("modal-senha").style.display = "flex";
+            document.getElementById("input-senha").value = "";
+            document.getElementById("input-senha").focus();
+        }
+
+        function fecharModal() {
+            document.getElementById("modal-senha").style.display = "none";
+        }
+
+        function confirmarSenha() {
+            const senha = document.getElementById("input-senha").value;
+
+            if (tipoAcesso === 'admin') {
+                if (senha === "159357") {
+                    window.location.href = "results.html";
+                } else {
+                    alert("Senha incorreta!");
+                    fecharModal();
+                }
+            } else if (tipoAcesso === 'gabarito') {
+                if (senha === "2025") {
+                    window.location.href = "gabarito.html";
+                } else {
+                    alert("Código inválido!");
+                    fecharModal();
+                }
             }
         }
 
-        function acessoAdmin() {
-            const senha = prompt("Digite a senha de administrador:");
-            if (senha === "159357") {
-                window.location.href = "results.html";
-            } else {
-                alert("Senha incorreta!");
-            }
+        // Fecha o modal se clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal-senha");
+            if (event.target == modal) fecharModal();
         }
     </script>
 </body>
