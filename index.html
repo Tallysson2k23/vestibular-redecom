@@ -69,30 +69,155 @@
   </div>
 </div>
 
+
 <script>
-const gabarito = ["C","D","C","B","C","C","C","B","C","C","C","C","C","C","C","B","B","C","C","B"];
-const perguntas = [
-    ["Qual é a função principal da máquina de fusão no trabalho com fibra?", ["Medir a perda de sinal da rede","Fazer a limpeza química dos conectores","Unir duas fibras de forma permanente e precisa","Identificar o código de cores das fibras","Testar se a velocidade da internet está correta"]],
-    ["Para crimpar um conector RJ45, quais padrões de cores são utilizados?", ["Padrões CAT7 e CAT8","Topologias FTTH e FTTB","Polimentos SC/APC e LC/UPC","Esquemas T568A e T568B","Modos FDX e HDX"]],
-    ["Qual instrumento você usa para medir a potência do sinal óptico em dBm?", ["OTDR","Caneta de luz (VFL)","Power Meter","Alicate decapador","Clivador de precisão"]],
-    ["O que o teste de OTDR permite identificar na fibra?", ["O tipo de polimento do conector","Eventos na fibra, rompimento, dobras","A configuração de rotas do roteador","O endereço MAC dos equipamentos","A frequência do Wi-Fi no local"]],
-    ["Qual é o conector (geralmente verde) mais usado em instalações FTTH?", ["Cabo HDMI","Conector telefônico RJ11","Conector SC/APC","Plugue de monitor VGA","Cabo USB-C"]],
-    ["Qual equipamento é responsável por distribuir as portas optica para os clientes?", ["ONU","Switch","CTO","Roteador wireless","OLT"]],
-    ["Qual comando é usado no terminal para testar se um equipamento está respondendo?", ["mkdir","reboot","ping","nano","sudo"]],
-    ["Qual equipamento converter o sinal de optico em sinal elétrico?", ["Repetidor de sinal","ONU/ONT","Switch com PoE","Conversor de vídeo","Modem coaxial"]],
-    ["Qual é o maior risco ao manusear e cortar fibras ópticas?", ["Levar um choque elétrico","Risco de envenenamento","Farpas de vidro na pele ou nos olhos","Risco de explosão","Queimar os circuitos da OLT"]],
-    ["Qual é a principal diferença entre uma rede LAN e uma rede WAN?", ["A LAN cobre países inteiros e a WAN apenas salas", "A WAN é usada apenas para conexões via cabo coaxial", "A LAN é uma rede local restrita e a WAN conecta redes distantes", "Não existe diferença, são apenas nomes para a mesma tecnologia", "A LAN só funciona com fibra e a WAN só com rádio"]],
-    ["Qual é a função básica de um Switch em uma rede LAN?", ["Converter luz em eletricidade","Entregar um IP público","Interconectar os dispositivos da rede LAN","Gerenciar os splitters da rede","Receber sinal via radio"]],
-    ["Sobre o endereçamento IP, qual é a principal função do endereço de rede?", ["Identificar a marca e o modelo do roteador", "Definir a velocidade máxima da conexão Wi-Fi", "Identificar a qual rede um dispositivo pertence", "Trocar o endereço físico da placa de rede", "Criptografar as senhas de acesso do usuário"]],
-    ["Para que serve o serviço de DHCP em uma rede?", ["Resolver os nomes dos sites","Configurar o IP manualmente em cada PC","Entregar IPs automaticamente para os dispositivos","Proteger a rede contra invasores","Controlar o tráfego de dados entre máquinas"]],
-    ["Qual equipamento costuma gerenciar a rede interna e distribuir os IPs?", ["Patch panel","ONU bridge","Roteador","Dominar de jeffeson","Modem de cabo coaxial"]],
-    ["O que o comando 'traceroute' mostra para o técnico?", ["A velocidade real da conexão","A lista de redes Wi-Fi próximas","O caminho que os pacotes percorrem até o destino","Como resetar o equipamento","Como configurar uma VLAN"]],
-    ["Qual é o limite de distância recomendado para um cabo de rede UTP CAT6?", ["Cabo 50m","Cabo 100m","Fibra 1000m","Cabo 30m","Cabo optico 250m"]],
-    ["Qual é o papel do Firewall na segurança de uma rede?", ["Converter o sinal óptico","Filtrar e controlar o tráfego de dados","Aumentar o alcance do Wi-Fi","Diminuir a latência ","Dividir o sinal da fibra"]],
-    ["Ao configurar um roteador secundário o correto é:", ["Deixar os dois roteadores com o DHCP ligado", "Conectar o cabo na porta WAN e desativar o Wi-Fi", "Desativar o DHCP do secundário e usar uma porta LAN", "Mudar o endereço MAC de todos os aparelhos da rede", "Configurar sem fio"]],
-    ["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", ["O servidor de arquivos","A interface de gerência da ONU","O endereço de saída da rede para a internet","O IP da VLAN de dados","O endereço físico do hardware"]],
-    ["Qual protocolo traduz nomes para o endereço IP?", ["Protocolo FTP","Servidor de DNS","Protocolo SNMP","Protocolo MQTT","Servidor de e-mail"]],
+const gabarito = [
+  "C","D","C","C","C",
+  "B","C","C","B","B",
+  "C","C","B","C","B",
+  "C","C","C","C","B"
 ];
+const perguntas = [
+  ["Durante a fusão de fibras ópticas, qual fator é mais crítico para garantir baixa atenuação?",
+    ["O comprimento do cabo",
+     "A potência do laser",
+     "O alinhamento preciso dos núcleos da fibra",
+     "A cor do conector",
+     "O tipo de OLT utilizada"]],
+
+  ["Ao crimpar um cabo de rede para uso profissional, o padrão mais utilizado em redes corporativas é:",
+    ["IEEE 802.11",
+     "CAT7 industrial",
+     "568C M.M.L.A.A.L.V.V",
+     "Padrão de cores V.V.L.A.A.L.M.M",
+     "SC/APC"]],
+
+  ["Qual equipamento permite medir a potência óptica recebida e transmitida?",
+    ["OTDR",
+     "VFL",
+     "Power Meter",
+     "Clivador",
+     "Switch gerenciável"]],
+
+  ["Em um teste de OTDR, um pico de reflexão elevado geralmente indica:",
+    ["Configuração incorreta de IP",
+     "Emenda bem executada",
+     "Conector sujo ou mal encaixado ou atenuação",
+     "Velocidade excessiva",
+     "Loop de rede"]],
+
+  ["Por que o conector SC/APC é preferido em redes FTTH?",
+    ["Por ser mais barato",
+     "Por permitir maior velocidade Ethernet",
+     "Por reduzir reflexões ópticas",
+     "Por ser multimodo",
+     "Por não exigir limpeza"]],
+
+  ["Qual a função principal da CTO em uma rede FTTH?",
+    ["Converter sinal óptico",
+     "Distribuir a fibra até os assinantes",
+     "Gerenciar autenticação",
+     "Fornecer IP público",
+     "Amplificar o sinal"]],
+
+  ["Qual comando é mais indicado para verificar latência e perda de pacotes em um link?",
+    ["nslookup",
+     "ifconfig",
+     "ping",
+     "route",
+     "netstat"]],
+
+  ["Em uma instalação residencial, qual equipamento é responsável por converter o sinal óptico em elétrico no cliente final?",
+    ["OLT",
+     "Switch Layer 3",
+     "ONU/ONT",
+     "Splitter",
+     "Patch cord"]],
+
+  ["Qual procedimento é obrigatório após realizar uma clivagem de fibra?",
+    ["Testar Wi-Fi",
+     "Limpar os resíduos de fibra",
+     "Reconfigurar IP",
+     "Reiniciar a OLT",
+     "Trocar o conector"]],
+
+  ["Uma rede WAN se diferencia de uma LAN principalmente por:",
+    ["Utilizar apenas fibra",
+     "Abranger grandes distâncias geográficas",
+     "Possuir menor velocidade",
+     "Não usar roteadores",
+     "Não utilizar IP"]],
+
+  ["Um switch opera principalmente em qual camada do modelo OSI?",
+    ["Camada Física",
+     "Camada de Rede",
+     "Camada de Enlace",
+     "Camada de Transporte",
+     "Camada de Aplicação"]],
+
+  ["Em uma rede IPv4, o endereço de IP é utilizado para:",
+    ["Identificar fluxo de pacotes",
+     "Definir o gateway",
+     "Identificar o host na rede",
+     "Configurar DNS",
+     "Aumentar segurança"]],
+
+  ["Qual é a vantagem do DHCP em redes médias e grandes?",
+    ["Aumentar velocidade",
+     "Evitar conflitos de IP e facilitar o gerenciamento",
+     "Bloquear acessos externos",
+     "Criar VLANs",
+     "Reduzir latência"]],
+
+  ["Qual equipamento geralmente executa NAT, DHCP e Firewall em redes domésticas?",
+    ["ONU em bridge",
+     "Patch panel",
+     "Roteador",
+     "Switch",
+     "OLT"]],
+
+  ["O comando traceroute é útil principalmente para:",
+    ["Testar velocidade",
+     "Detectar gargalos e falhas no caminho até o destino",
+     "Configurar VLAN",
+     "Medir potência óptica",
+     "Ativar firewall"]],
+
+  ["Em cabeamento estruturado, o limite de um cabo UTP CAT6 é:",
+    ["Até 150m",
+     "Somente 50m",
+     "Até 100m",
+     "Até 500m",
+     "Até 40m"]],
+
+  ["Qual função um firewall em uma rede?",
+    ["Distribuir IP",
+     "Converter protocolos",
+     "Filtrar tráfego com base em regras",
+     "Amplificar sinal",
+     "Balancear carga"]],
+
+  ["Ao usar um segundo roteador como Access Point, qual configuração é correta?",
+    ["DHCP ativo nos dois",
+     "Usar porta WAN",
+     "DHCP desativado e ligação via LAN",
+     "Alterar MAC",
+     "Criar nova sub-rede"]],
+
+["O que significa o 'Gateway Padrão' nas configurações de um dispositivo?", 
+    ["O servidor de arquivos",
+    "A interface de gerência da ONU",
+    "O endereço de saída da rede para a internet",
+    "O IP da VLAN de dados","O endereço físico do hardware"]],
+
+  ["Qual serviço converte nomes de domínio em endereços IP?",
+    ["FTP",
+     "DNS",
+     "SMTP",
+     "SNMP",
+     "DHCP"]]
+];
+
 
 let tempoRestante = localStorage.getItem('prova_tempo') ? parseInt(localStorage.getItem('prova_tempo')) : 45 * 60;
 let timerAtivo = false;
