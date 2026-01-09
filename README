@@ -1,7 +1,7 @@
  
 Iniciar apacha no xammp
 
-Digite: node server.js.
+Digite: node server.js
 
 No PC: http://localhost:3000/index.html
 
